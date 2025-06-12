@@ -2,8 +2,15 @@ import streamlit as st
 import os
 from datetime import datetime, time as dtime
 import time
-import schedule
 
+# Schedule modülünü garanti altına al
+try:
+    import schedule
+except ModuleNotFoundError:
+    os.system("pip install schedule")
+    import schedule
+
+from automation import run_automation
 # === Sayfa Ayarları ===
 st.set_page_config(page_title="WhatsApp Botu", layout="centered")
 st.title("📱 WhatsApp Otomasyon Botu")
