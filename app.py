@@ -1,28 +1,52 @@
 import streamlit as st
-import random
-import time
-from main_automation_module import run_automation  # Buraya otomasyon kodunun fonksiyonunu koyacağız
+import os
+from datetime import datetime
 
-st.set_page_config(page_title="WhatsApp Otomasyon Paneli", layout="centered")
-st.title("📲 WhatsApp Toplu Mesaj Gönderimi")
+# === Sayfa Ayarları ===
+st.set_page_config(page_title="WhatsApp Botu", layout="centered")
+st.title("📱 WhatsApp Otomasyon Botu")
 
-st.markdown("Bu uygulama ile unread (okunmamış) kişilere toplu mesaj gönderebilirsin.")
+# === Giriş Alanları ===
+st.subheader("1. Mesaj Formatları")
 
-# --- 1. Kullanıcı Girdileri ---
-text_message = st.text_area("✉️ Metin Mesajı (İsteğe bağlı)", max_chars=1000)
+text_message = st.text_area("✍️ Metin Mesajı", placeholder="Merhaba, nasılsınız?")
 
-# --- 2. Video ve Ses Yükleme (Placeholder - henüz işlenmiyor) ---
-video_file = st.file_uploader("🎥 Video Yükle (.mp4)", type=["mp4"])
-audio_file = st.file_uploader("🎵 Ses Kaydı Yükle (.mp3, .ogg)", type=["mp3", "ogg"])
+image_file = st.file_uploader("🖼️ Resim Gönder", type=["jpg", "jpeg", "png"])
+video_file = st.file_uploader("🎥 Video Gönder", type=["mp4", "mov"])
+audio_file = st.file_uploader("🎵 Ses Gönder", type=["mp3", "wav", "ogg"])
 
-# --- 3. Gönder Butonu ---
+# === Mesajı Gönder Butonu ===
+st.subheader("2. Mesajı Gönder")
 if st.button("🚀 Gönderimi Başlat"):
-    if not text_message and not video_file and not audio_file:
-        st.warning("Lütfen en az bir mesaj türü girin (metin, video ya da ses).")
-    else:
-        with st.spinner("WhatsApp Web ile bağlantı kuruluyor ve mesajlar gönderiliyor..."):
-            suffixes = [":)", ";)", ":D", "(:", "(;)" ]
-            final_message = f"{text_message.strip()} {random.choice(suffixes)}" if text_message else None
-            result = run_automation(final_message, video_file, audio_file)
-            st.success("🎉 Gönderim tamamlandı!")
-            st.code(result, language="text")
+    # Geçici olarak gönderilenleri uploads klasörüne kaydet
+    os.makedirs("uploads", exist_ok=True)
+    media_paths = {}
+
+    if image_file:
+        image_path = os.path.join("uploads", image_file.name)
+        with open(image_path, "wb") as f:
+            f.write(image_file.getbuffer())
+        media_paths['image'] = image_path
+
+    if video_file:
+        video_path = os.path.join("uploads", video_file.name)
+        with open(video_path, "wb") as f:
+            f.write(video_file.getbuffer())
+        media_paths['video'] = video_path
+
+    if audio_file:
+        audio_path = os.path.join("uploads", audio_file.name)
+        with open(audio_path, "wb") as f:
+            f.write(audio_file.getbuffer())
+        media_paths['audio'] = audio_path
+
+    st.success("Dosyalar yüklendi. Otomasyon başlatılıyor...")
+
+    # automation.py içinde yazacağımız fonksiyona veri gönder
+    # örnek: run_automation(text_message, media_paths)
+
+    st.info("🕒 Lütfen birkaç saniye bekleyin. Mesajlar gönderiliyor...")
+
+# === Alt Bilgi ===
+st.markdown("---")
+st.caption("Otomasyon geliştirme: Esse x ChatGPT")
