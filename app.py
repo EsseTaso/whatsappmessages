@@ -3,7 +3,7 @@ import os
 from datetime import datetime, time as dtime
 import time
 
-# Schedule modülünü garanti altına al
+# Schedule modülünü çalışırken yüklemeye çalış
 try:
     import schedule
 except ModuleNotFoundError:
@@ -11,6 +11,7 @@ except ModuleNotFoundError:
     import schedule
 
 from automation import run_automation
+
 # === Sayfa Ayarları ===
 st.set_page_config(page_title="WhatsApp Botu", layout="centered")
 st.title("📱 WhatsApp Otomasyon Botu")
@@ -56,7 +57,7 @@ if st.button("🚀 Gönderimi Planla veya Başlat"):
     def job():
         st.success("🚀 Otomasyon başlatılıyor...")
         st.info("🕒 Lütfen birkaç saniye bekleyin. Mesajlar gönderiliyor...")
-        # run_automation(text_message, media_paths)
+        run_automation(text_message, media_paths)
         st.success("✅ Mesaj gönderimi tamamlandı.")
 
     if run_now:
