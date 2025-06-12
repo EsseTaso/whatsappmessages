@@ -1,7 +1,5 @@
 import streamlit as st
 import os
-from datetime import datetime
-import time
 from automation import run_automation
 import random
 
@@ -11,8 +9,6 @@ st.title("📱 WhatsApp Otomasyon Botu")
 
 # === Giriş Alanları ===
 st.subheader("1. Mesaj Formatları")
-
-text_message = st.text_area("✍️ Metin Mesajı (Yine de her gönderim için rastgeleleşir)", placeholder="Buraya bir şey yazabilirsiniz veya boş bırakabilirsiniz")
 
 image_file = st.file_uploader("🖼️ Resim Gönder", type=["jpg", "jpeg", "png"])
 video_file = st.file_uploader("🎥 Video Gönder", type=["mp4", "mov"])
@@ -42,22 +38,16 @@ if st.button("🚀 Mesajı Gönder"):
             f.write(audio_file.getbuffer())
         media_paths['audio'] = audio_path
 
-    # Her gönderim için random metin oluştur
-    sample_texts = [
-        "Selam, iyi günler!",
-        "Merhaba, kolay gelsin!",
-        "Size ulaşmak istedim 😊",
-        "Bilgilendirme için yazıyorum.",
-        "İyi çalışmalar dilerim!",
-        "Size kısa bir bilgilendirme iletmek istedim.",
-        "Merhaba, müsait olduğunuzda dönüş yaparsanız sevinirim.",
-        "Umarım her şey yolundadır!"
-    ]
-    randomized_text = random.choice(sample_texts)
-
     st.success("🚀 Otomasyon başlatılıyor...")
-    st.info(f"📨 Gönderilecek mesaj: {randomized_text}")
-    run_automation(randomized_text, media_paths)
+
+    # Emoji listesiyle rastgele emoji mesajı oluştur
+    emoji_list = ["🙂", "😉", "👋", "😊", "👍"]
+    emoji_message = random.choice(emoji_list)
+    st.info(f"📨 Gönderilecek emoji: {emoji_message}")
+
+    # Otomasyonu başlat
+    run_automation(emoji_message, media_paths)
+
     st.success("✅ Mesaj gönderimi tamamlandı.")
 
 # === Alt Bilgi ===
