@@ -12,7 +12,7 @@ def run_automation(base_message, media_paths, max_users=100):
     # Chrome Başlatma
     options = webdriver.ChromeOptions()
     options.add_argument("--user-data-dir=./User_Data")
-    chromedriver_path = "C:\\Users\\admin\\Desktop\\chromedriver.exe"
+    chromedriver_path = "chromedriver.exe"
     driver = webdriver.Chrome(service=Service(executable_path=chromedriver_path), options=options)
     driver.get("https://web.whatsapp.com")
     input("QR kod okutulduysa ENTER'a bas...")
