@@ -50,14 +50,14 @@ def run_automation(base_message, media_paths, max_users=100):
             result.click()
             time.sleep(random.uniform(2, 4))
 
-            # Metin mesajı gönder
-            if base_message:
-                input_box = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="10"]'))
-                )
-                input_box.send_keys(f"{base_message} {random.choice(['🙂', '😉', '👋'])}")
-                input_box.send_keys(Keys.ENTER)
-                time.sleep(1)
+            # Her mesajda random emoji gönder
+            emoji_message = random.choice(["🙂", "😉", "👋", "😊", "👍"])
+            input_box = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="10"]'))
+            )
+            input_box.send_keys(emoji_message)
+            input_box.send_keys(Keys.ENTER)
+            time.sleep(1)
 
             # Medya mesajları gönder
             if media_paths:
